@@ -1,0 +1,111 @@
+This tests the ``BaseGeometry`` class defined in ``7-base_geometry.py``.
+
+First, let's bring in the class and make an instance::
+
+    >>> BaseGeometry = __import__('7-base_geometry').BaseGeometry
+    >>> bg = BaseGeometry()
+
+Calling integer_validator() with no arguments at all raises a
+TypeError, since both name and value are required::
+
+    >>> try:
+    ...     bg.integer_validator()
+    ... except TypeError:
+    ...     print("TypeError raised")
+    TypeError raised
+
+Calling integer_validator("age") with only the name and no value is
+also missing a required argument::
+
+    >>> try:
+    ...     bg.integer_validator("age")
+    ... except TypeError:
+    ...     print("TypeError raised")
+    TypeError raised
+
+A valid positive integer passes silently (the method returns nothing)::
+
+    >>> bg.integer_validator("age", 1)
+    >>> bg.integer_validator("my_int", 12)
+    >>> bg.integer_validator("width", 89)
+
+A value of zero raises a ValueError, since it must be greater than 0::
+
+    >>> try:
+    ...     bg.integer_validator("age", 0)
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [ValueError] age must be greater than 0
+
+A negative value also raises a ValueError::
+
+    >>> try:
+    ...     bg.integer_validator("age", -4)
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [ValueError] age must be greater than 0
+
+A string is not accepted, even one that looks like a number::
+
+    >>> try:
+    ...     bg.integer_validator("age", "4")
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] age must be an integer
+
+A tuple is not accepted::
+
+    >>> try:
+    ...     bg.integer_validator("age", (4,))
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] age must be an integer
+
+A list is not accepted::
+
+    >>> try:
+    ...     bg.integer_validator("age", [3])
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] age must be an integer
+
+Booleans are rejected as well, even though bool is technically a
+subclass of int in Python::
+
+    >>> try:
+    ...     bg.integer_validator("age", True)
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] age must be an integer
+
+A set is not accepted::
+
+    >>> try:
+    ...     bg.integer_validator("age", {3, 4})
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] age must be an integer
+
+None is not accepted::
+
+    >>> try:
+    ...     bg.integer_validator("age", None)
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] age must be an integer
+
+A float is not accepted either::
+
+    >>> try:
+    ...     bg.integer_validator("ratio", 3.5)
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [TypeError] ratio must be an integer
+
+area() still isn't implemented at this stage of the geometry module::
+
+    >>> try:
+    ...     bg.area()
+    ... except Exception as e:
+    ...     print("[{}] {}".format(e.__class__.__name__, e))
+    [Exception] area() is not implemented

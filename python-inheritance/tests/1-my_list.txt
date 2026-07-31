@@ -1,0 +1,65 @@
+This tests the ``MyList`` class defined in ``1-my_list.py``.
+
+First, let's bring in the class::
+
+    >>> MyList = __import__('1-my_list').MyList
+
+MyList inherits from the builtin list, so a fresh instance behaves
+like a normal (empty) list, and is a real list under the hood::
+
+    >>> my_list = MyList()
+    >>> my_list
+    []
+    >>> isinstance(my_list, list)
+    True
+
+Calling print_sorted() on an empty list prints an empty list, and
+does not raise any error::
+
+    >>> my_list.print_sorted()
+    []
+
+Appending values works exactly like the builtin list type, and
+printing it (via the inherited __str__/__repr__) preserves insertion
+order::
+
+    >>> my_list.append(1)
+    >>> my_list.append(4)
+    >>> my_list.append(2)
+    >>> my_list.append(3)
+    >>> my_list.append(5)
+    >>> print(my_list)
+    [1, 4, 2, 3, 5]
+
+Calling print_sorted() on a list that is not already sorted prints
+an ascending sorted view of it::
+
+    >>> my_list.print_sorted()
+    [1, 2, 3, 4, 5]
+
+The underlying list itself is not modified by print_sorted() -- it
+builds and prints a new sorted list rather than sorting in place::
+
+    >>> print(my_list)
+    [1, 4, 2, 3, 5]
+
+A list that happens to already be in sorted order prints the same
+way, unchanged::
+
+    >>> ordered = MyList()
+    >>> ordered.append(1)
+    >>> ordered.append(2)
+    >>> ordered.append(3)
+    >>> ordered.print_sorted()
+    [1, 2, 3]
+
+Negative numbers and duplicates sort correctly too::
+
+    >>> another = MyList()
+    >>> another.append(-3)
+    >>> another.append(0)
+    >>> another.append(2)
+    >>> another.append(2)
+    >>> another.append(-10)
+    >>> another.print_sorted()
+    [-10, -3, 0, 2, 2]
